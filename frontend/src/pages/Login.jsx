@@ -1,111 +1,88 @@
 import { useState } from 'react'
+import { Card, CardContent, CardTitle, CardDescription, CardHeader } from '../components/ui/card'
+import { Input } from '../components/ui/input'
+import { Button } from '../components/ui/button'
+import { loginUser } from '../services/api'
+import useWorkoutStore from '../store/useWorkoutStore';
 import toast from 'react-hot-toast'
-import { loginUser, registerUser } from '../services/api'
 
-const initialForm = { email: '', password: '' }
+export default function Login({ setAuthPage }) {
+  const [form, setForm] = useState({ email: '', password: '' })
+  const setLogged = useWorkoutStore(state => state.setLogged);
 
-export default function Login({ setLogged }) {
-  const [form, setForm] = useState(initialForm)
-  const [mode, setMode] = useState('login')
-  const [message, setMessage] = useState('')
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setForm((currentForm) => ({ ...currentForm, [name]: value }))
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    if (mode === 'register') {
-      const response = await registerUser(form)
-
-      if (response.data.status === 'registered') {
-        setMessage('Account created. You can log in now.')
-        setMode('login')
-        setForm(initialForm)
-        toast.success('Account created successfully')
-        return
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      const response = await loginUser(form)
+      if (response.data.status === 'success') {
+        toast.success('Welcome back 👋')
+        // Met à jour explicitement le store qui va nous envoyer au dashboard
+        setLogged({
+          id: response.data.userId,
+          email: form.email,
+          token: response.data.token,
+        })
+      } else {
+        toast.error('Wrong credentials')
       }
-
-      setMessage(
-        response.data.status === 'exists'
-          ? 'This email is already registered.'
-          : 'Registration failed. Please try again.',
-      )
-      return
+    } catch {
+       // L'intercepteur affiche déjà le Toast pour l'erreur 401 ou le network
     }
-
-    const response = await loginUser(form)
-
-    if (response.data.status === 'success') {
-      toast.success('Welcome back 👋')
-      setLogged({
-        id: response.data.userId,
-        email: form.email,
-      })
-      return
-    }
-
-    setMessage('Wrong credentials')
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.28),_transparent_30%),linear-gradient(135deg,_#1d4ed8_0%,_#7c3aed_48%,_#db2777_100%)] p-6">
-      <div className="w-full max-w-md rounded-[2rem] border border-white/20 bg-white/12 p-8 shadow-2xl shadow-indigo-950/35 backdrop-blur-xl">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/75">
-          Fitness Tracker
-        </p>
-        <h1 className="mt-3 text-3xl font-bold text-white">
-          {mode === 'login' ? 'Welcome back' : 'Create your account'}
-        </h1>
-        <p className="mt-2 text-sm text-white/75">
-          {mode === 'login'
-            ? 'Log in to manage your workouts and progress.'
-            : 'Register once, then start tracking your sessions.'}
-        </p>
+    <div className="flex min-h-screen items-center justify-center bg-zinc-950 p-6">
+      <Card className="w-full max-w-md rounded-none border border-white/10 bg-black p-8 shadow-none text-white">
+        <CardHeader className="p-0 mb-6">
+            <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">
+            System Auth
+            </p>
+            <CardTitle className="text-3xl font-extrabold uppercase tracking-tight text-white">
+            Connection
+            </CardTitle>
+            <CardDescription className="text-white/50 text-xs tracking-widest uppercase mt-2">
+            Enter credentials to access terminal
+            </CardDescription>
+        </CardHeader>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-3">
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full rounded-xl bg-white/75 p-3 text-gray-900 outline-none transition duration-300 placeholder:text-gray-500 focus:bg-white"
-          />
-          <input
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full rounded-xl bg-white/75 p-3 text-gray-900 outline-none transition duration-300 placeholder:text-gray-500 focus:bg-white"
-          />
+        <CardContent className="p-0">
+            <form onSubmit={handleSubmit} className="space-y-4">
+            <Input
+                name="email"
+                type="email"
+                placeholder="EMAIL"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full rounded-none border-white/10 bg-zinc-900 focus-visible:ring-primary text-white placeholder:text-white/30"
+            />
+            <Input
+                name="password"
+                type="password"
+                placeholder="PASSWORD"
+                value={form.password}
+                onChange={handleChange}
+                className="w-full rounded-none border-white/10 bg-zinc-900 focus-visible:ring-primary text-white placeholder:text-white/30"
+            />
 
-          {message ? <p className="text-sm text-white/80">{message}</p> : null}
+            <Button
+                type="submit"
+                className="w-full rounded-none bg-primary text-black hover:bg-primary/80 uppercase tracking-widest font-bold mt-2"
+            >
+                Login
+            </Button>
+            </form>
 
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-indigo-600 px-4 py-3 font-medium text-white transition duration-300 hover:scale-[1.01] hover:bg-indigo-700"
-          >
-            {mode === 'login' ? 'Login' : 'Register'}
-          </button>
-        </form>
-
-        <button
-          onClick={() => {
-            setMode(mode === 'login' ? 'register' : 'login')
-            setMessage('')
-            setForm(initialForm)
-          }}
-          className="mt-4 text-sm font-medium text-white/85 transition hover:text-white"
-        >
-          {mode === 'login'
-            ? 'Need an account? Register'
-            : 'Already registered? Log in'}
-        </button>
-      </div>
+            <Button
+                variant="outline"
+                onClick={() => setAuthPage('register')}
+                className="mt-6 w-full rounded-none border-white/10 text-white hover:bg-white/10 uppercase tracking-widest text-xs h-10 bg-transparent transition-colors"
+                >
+            Need an account? Register
+            </Button>
+        </CardContent>
+      </Card>
     </div>
   )
 }

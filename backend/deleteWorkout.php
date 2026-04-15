@@ -10,9 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 include 'db.php';
+require_once 'auth_middleware.php';
 
 $id = (int)($_GET['id'] ?? 0);
-$userId = getUserIdFromRequest();
+$userId = get_user_from_token();
 $stmt = $conn->prepare("DELETE FROM workouts WHERE id = ? AND user_id = ?");
 $stmt->bind_param("ii", $id, $userId);
 

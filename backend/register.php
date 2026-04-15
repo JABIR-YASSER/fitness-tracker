@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 include 'db.php';
+require_once 'auth_middleware.php';
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -37,7 +38,16 @@ $stmt = $conn->prepare("INSERT INTO users (email, password) VALUES (?, ?)");
 $stmt->bind_param("ss", $email, $password);
 
 if ($stmt->execute()) {
-    echo json_encode(["status" => "registered"]);
+    $userId = $stmt->insert_id;
+    $payload = [
+        'iss' => 'fitness_tracker',
+        'aud' => 'fitness_tracker_client',
+        'iat' => time(),
+        'exp' => time() + (86400 * 7),
+        'user_id' => $userId
+    ];
+    $jwt = Firebase\JWT\JWT::encode($payload, get_jwt_secret(), 'HS256');
+    echo json_encode(["status" => "registered", "token" => $jwt, "userId" => $userId]);
 } else {
     echo json_encode(["status" => "error"]);
 }
