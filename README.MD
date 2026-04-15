@@ -1,93 +1,112 @@
 # 🦾 Fitness Tracker SaaS — V3 (The Ultimate Edition)
 
-![Fitness Tracker Banner](https://via.placeholder.com/1200x400/000000/ccff00?text=FITNESS+TRACKER+V3+-+CYBER+ATHLETIC)
+Welcome to the repository for **Fitness Tracker SaaS**, a radically focused, highly gamified, and data-driven workout tracking platform. 
 
-Welcome to **Fitness Tracker SaaS**, a radically aggressive, highly-focused, and highly-gamified workout tracking platform. 
+Initially engineered as a student CRUD prototype, the platform has been massively scaled into an enterprise-grade web application. It features a strict **Cyber-Athletic** aesthetic (stark high-contrast dark mode with neon accents), scientifically accurate biomechanical computations, and a robust multiplayer gamification engine.
 
-Initially engineered as a CRUD prototype, it has been massively scaled into an enterprise-grade SaaS utilizing a **Cyber-Athletic** aesthetic (Neon Lime + Pitch Black), scientifically accurate **Bio-Metrics calculations**, and an engaged **Multiplayer Gamification** experience.
+---
 
-## ✨ Core Features (V3)
+## ✨ Core Features
 
-### 🏋️♂️ 1. Dynamic Hypertrophy & Cardio Engine
-- **Intelligent Forms:** Automatically adapts input parameters depending on the targeted exercise (Cardio requests `Duration`, Strength requests `Sets`, `Reps`, and `Weight Lifted`).
-- **Real-Time Volume & Caloric Maths:** The algorithm automatically parses scientific **MET (Metabolic Equivalent of Task)** coefficients against the user's BMI/Weight to accurately estimate caloric burn. Volume is computed on the fly.
-- **Vast Catalog Database:** Pre-configured with over 25 precise biomechanical movements targeting specific muscle groups.
+### 🏋️♂️ Dynamic Hypertrophy & Cardio Engine
+* **Intelligent Logging:** The UI automatically adapts input parameters based on the targeted exercise (e.g., Cardio requires `Duration`, while Strength training requests `Sets`, `Reps`, and `Weight Lifted`).
+* **Real-Time Telemetry:** The backend algorithm parses scientific **MET (Metabolic Equivalent of Task)** coefficients against the user's physiological data to accurately estimate caloric burn. Training volume is computed on the fly.
+* **Pre-Seeded Catalog:** Comes equipped with a relational database of over 25 precise biomechanical movements, categorized by target muscle groups and difficulty.
 
-### 🧬 2. Cyber-Anatomy Heatmap
-- **Visual Diagnostics:** Features a bespoke SVG Humanoid displaying a real-time heatmap of your muscular stress based on your past week's volume.
-- Focus heavy on Chest day? The pectorals light up aggressively in `Neon Lime`.
+### 🧬 Cyber-Anatomy Heatmap
+* **Visual Diagnostics:** An algorithmic engine analyzes your past week's training volume and dynamically updates an anatomical SVG dashboard.
+* **Targeted Recovery:** Highlights overworked muscle groups in real-time, allowing users to visually identify neglected areas of their physique without digging through charts.
 
-### 🕹️ 3. Multiplayer Gamification & Leaderboards
-- **Global Ladder:** Secure backend polling that pitches users against one another by calculating Total XP accumulated from workout density.
-- **Ranks & Badges:** Automatically scales UI badging through tiers (Iron, Bronze, Silver, Gold).
-- **Privacy First:** Automatic cryptographic email-masking on the leaderboard.
+### 🕹️ Multiplayer Gamification
+* **Global Leaderboards:** Secure backend polling pitches users against one another by calculating total XP accumulated from workout consistency and density.
+* **Automated Ranking:** Users automatically scale through competitive tiers (Iron, Bronze, Silver, Gold) based on historical performance.
+* **Privacy-First Design:** Implements automatic cryptographic email-masking on all public-facing leaderboards.
 
-### ⚡ 4. One-Click Routines (Bulk Logging)
-- Bypass tedious form filling with **Quick Templates** ("Push Day", "Pull Day"). Click once to deploy an entire 6-movement routine instantly into your log book using high-speed SQL bulk-inserts and Optimistic UI.
+### ⚡ One-Click Routines
+* **High-Speed Logging:** Bypass tedious form filling with quick templates (e.g., "Push Day", "Pull Day"). 
+* **Bulk Deployment:** Click once to deploy an entire multi-movement routine instantly into your logbook, utilizing optimized SQL bulk-inserts and Optimistic UI rendering.
 
-### 🔐 5. Enterprise Security & Architecture
-- **Stateless JWT Auth:** Moving away from primitive local PHP sessions, the application leverages highly secure, time-based JSON Web Tokens through Axios Interceptor pipelines. Auto-boot on `401 Unauthorized`.
-- **Zustand State Management:** Absolute 0 prop-drilling.
-- **Heads-Up Notifications:** `react-hot-toast` displays smooth, immediate graphical network alerts across the UI.
+### 🔐 Enterprise Architecture
+* **Stateless JWT Authentication:** Moving away from primitive PHP sessions, the application leverages highly secure, time-based JSON Web Tokens intercepted and injected dynamically via Axios pipelines.
+* **Zero Prop-Drilling:** Complete frontend state centralization using Zustand.
+* **Heads-Up Notifications:** Asynchronous network alerts and UI confirmations are handled gracefully via `react-hot-toast`.
 
 ---
 
 ## 🛠️ Technology Stack
 
-| Domain | Technolgies |
-| --- | --- |
-| **Frontend** | React 18, Vite, Zustand, Tailwind CSS v4, Shadcn/UI, Recharts |
-| **Backend** | PHP 8+, MySQL, `firebase/php-jwt` |
-| **Design** | `bg-zinc-950`, Flat Borders, Cyberpunk aesthetics |
+| Architecture | Technologies Used |
+| :--- | :--- |
+| **Frontend Core** | React 18, Vite |
+| **Styling & UI** | Tailwind CSS v4, Shadcn UI (Radix), Lucide Icons |
+| **State & Data** | Zustand, Axios, Recharts (Data Visualization) |
+| **Backend API** | PHP 8+ (RESTful JSON API) |
+| **Database** | MySQL (Relational Schema) |
+| **Security** | `firebase/php-jwt`, bcrypt hashing |
+
+---
+
+## 📂 Project Structure
+
+```text
+fitness-tracker/
+├── backend/                  # PHP API & Authentication
+│   ├── .env                  # Environment variables (JWT Secret)
+│   ├── auth_middleware.php   # JWT validation logic
+│   ├── db.php                # PDO Database connection & CORS
+│   └── endpoints/            # CRUD operations & algorithms
+├── frontend/                 # React SPA
+│   ├── src/
+│   │   ├── components/       # UI Components (Shadcn, Heatmap, Forms)
+│   │   ├── store/            # Zustand global state (useWorkoutStore.js)
+│   │   ├── services/         # Axios interceptors & API logic
+│   │   └── App.jsx           # Routing & Layout
+│   ├── package.json
+│   └── tailwind.config.js    # Cyber-Athletic theme configuration
+└── database/                 # SQL Migrations
+    └── schema_v3.sql         # Full database schema and catalog seeds
+```
 
 ---
 
 ## 🚀 Installation & Local Environment
 
 ### Prerequisites
-- Node.js (v18+)
-- PHP (v8.1+) & Composer
-- MySQL server (Laragon, XAMPP, or equivalent)
+* Node.js (v18+)
+* PHP (v8.1+) & Composer
+* MySQL Server (Laragon, XAMPP, or equivalent)
 
-### 1. Database Setup
-1. Create a MySQL database named `fitness_tracker`.
-2. Import the schema/migrations to generate `users`, `workouts`, `exercises_catalog`, `routines`, and `routine_exercises`.
-3. (Optional) Run `v3_migration.php` and `catalog_expansion.php` to seed the complex exercises and hypertrophy modules.
+### 1. Database Initialization
+1. Create a fresh MySQL database named `fitness_tracker`.
+2. Import the provided schema (`database/schema_v3.sql`) to generate the required tables: `users`, `workouts`, `exercises_catalog`, `routines`, and `routine_exercises`. This will also seed the exercise catalog.
 
 ### 2. Backend (PHP) Configuration
-1. Navigate to the `/backend` folder.
-2. If `vendor/autoload.php` is missing, install the dependencies for JWT:
+1. Navigate to the `/backend` directory.
+2. Install the necessary PHP dependencies via Composer:
    ```bash
    composer require firebase/php-jwt vlucas/phpdotenv
    ```
-3. Create a `.env` file at the root of `backend/` and set your secure secret:
+3. Create a `.env` file at the root of the `/backend` directory and define your secure JWT key:
    ```env
-   JWT_SECRET_KEY="YOUR_SUPER_SECRET_KEY"
+   JWT_SECRET_KEY="YOUR_SUPER_SECRET_KEY_HERE"
    ```
-4. Serve the PHP environment locally via Laragon or PHP's built-in server:
+4. Serve the PHP environment locally (e.g., via Laragon, XAMPP, or PHP's built-in server):
    ```bash
    php -S localhost:8000
    ```
 
 ### 3. Frontend (React) Configuration
-1. Navigate to the `/frontend` folder.
-2. Install the necessary NPM dependencies:
+1. Navigate to the `/frontend` directory.
+2. Install the required NPM packages:
    ```bash
    npm install
    ```
-3. Boot the Vite development server:
+3. Ensure your API endpoint in `src/services/api.js` points to your local PHP server port.
+4. Boot the Vite development server:
    ```bash
    npm run dev
    ```
-4. Target the backend endpoints inside `src/services/api.js` (assumed port `80` from Laragon or `8000` via CLI).
 
 ---
 
-## 🖼️ User Interface 
-
-*Insert screenshots of the Dashboard, Heatmap, and Leaderboard here before publishing to GitHub repository settings!*
-
----
-
-**Developed & Architected entirely via Antigravity / Gemini.**  
-*Stay focused. Lift heavy. 🦾*
+**Developed & Architected via Antigravity / Gemini.** *Stay focused. Lift heavy.* 🦾
